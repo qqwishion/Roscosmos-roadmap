@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+# на тестах
+*.sqlite3
+*.log
+
+*.mo
+*.pot
+db.sqlite3
+/staticfiles/
+media/
+
+venv/
+.idea/
+
+.DS_Store
+Thumbs.db
