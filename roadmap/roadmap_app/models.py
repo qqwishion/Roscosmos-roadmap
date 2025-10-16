@@ -46,32 +46,40 @@ class SupportMeasure(models.Model):
 
 
 class Specialty(models.Model):
-    name = models.CharField(max_length=255, verbose_name="Специальность / Направление подготовки")
+    name = models.CharField(blank=True, null=True, max_length=255, verbose_name="Специальность / Направление подготовки")
     institution = models.ForeignKey(
-        EducationInstitution, on_delete=models.CASCADE, related_name="specialties", verbose_name="Учебное заведение"
+        EducationInstitution, blank=True, null=True, on_delete=models.CASCADE, related_name="specialties", verbose_name="Учебное заведение"
     )
     organization = models.ForeignKey(
-        Organization, on_delete=models.CASCADE, related_name="specialties", verbose_name="Организация"
+        Organization, blank=True, null=True, on_delete=models.CASCADE, related_name="specialties", verbose_name="Организация"
     )
     has_internship = models.BooleanField(default=False, verbose_name="Есть стажировка")
     intern_position = models.CharField(max_length=255, blank=True, null=True, verbose_name="Стажерская позиция")
 
     # Связи с мерами поддержки. НЕ МЕНЯТЬ!!
+    start_position = models.CharField(max_length=255, blank=True, null=True, verbose_name="Начальная позиция")
+    next_positions = models.TextField(blank=True, null=True, verbose_name="Последующие позиции")
     intern_support = models.ManyToManyField(
-        SupportMeasure, blank=True, null=True, related_name="intern_specialties", limit_choices_to={"type": "internship"},
+        SupportMeasure,
+        blank=True,
+        related_name="intern_specialties",
+        limit_choices_to={"type": "internship"},
         verbose_name="Меры поддержки (стажировка)"
     )
-    start_position = models.CharField(max_length=255, blank=True, null=True, verbose_name="Начальная позиция")
     start_support = models.ManyToManyField(
-        SupportMeasure, blank=True, null=True, related_name="start_specialties", limit_choices_to={"type": "start"},
+        SupportMeasure,
+        blank=True,
+        related_name="start_specialties",
+        limit_choices_to={"type": "start"},
         verbose_name="Меры поддержки (начальная позиция)"
     )
-    next_positions = models.TextField(blank=True, null=True, verbose_name="Последующие позиции")
     next_support = models.ManyToManyField(
-        SupportMeasure, blank=True, null=True, related_name="career_specialties", limit_choices_to={"type": "career"},
+        SupportMeasure,
+        blank=True,
+        related_name="career_specialties",
+        limit_choices_to={"type": "career"},
         verbose_name="Меры поддержки (последующие позиции)"
     )
-
     def __str__(self):
         return f"{self.name} ({self.institution.name})"
 
@@ -106,20 +114,34 @@ class UserPath(models.Model):
 
     entry_after = models.CharField(max_length=2, choices=CLASS_CHOICES, verbose_name="Поступление после класса")
     education_type = models.CharField(max_length=10, choices=EDUCATION_TYPE_CHOICES, verbose_name="Тип образования")
-    specialty = models.ForeignKey(Specialty, on_delete=models.SET_NULL, verbose_name="Выбранная специальность")
+    specialty = models.ForeignKey(
+        Specialty,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Выбранная специальность"
+    )
     needs_internship = models.BooleanField(default=False, verbose_name="Нужна ли стажировка")
     career_goal = models.CharField(max_length=255, blank=True, null=True, verbose_name="Желаемая позиция")
     recommended_institution = models.ForeignKey(
-        EducationInstitution, on_delete=models.SET_NULL, null=True, blank=True, related_name="recommended_paths",
+        EducationInstitution,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="recommended_paths",
         verbose_name="Рекомендуемое учебное заведение"
     )
     recommended_organization = models.ForeignKey(
-        Organization, on_delete=models.SET_NULL, null=True, blank=True, related_name="recommended_paths",
+        Organization,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="recommended_paths",
         verbose_name="Рекомендуемая организация"
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-            return (f"Путь пользователя ({self.get_entry_after_display()}" #type:ignore
-                    f" → {self.get_education_type_display()})") #type:ignore
+        return (f"Путь пользователя ({self.get_entry_after_display()}" #type:ignore
+                f" → {self.get_education_type_display()})") #type:ignore

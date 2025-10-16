@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Космический Roadmap</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <img src="{% static 'img/roscosmos_logo.png' %}" alt="Роскосмос">
+            <h1>КОСМИЧЕСКИЙ ROADMAP</h1>
+        </div>
+        <nav class="nav-tabs">
+            <button class="tab active" data-target="home">Главная</button>
+            <button class="tab" data-target="universities">Вузы</button>
+            <button class="tab" data-target="colleges">Ссузы</button>
+            <button class="tab" data-target="org">Предприятия</button>
+            <button class="tab" data-target="roadmap">Roadmap</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="tab-content active">
+            <h2>Главная</h2>
+            <p>Добро пожаловать в Космический Roadmap!</p>
+        </section>
+
+        <section id="universities" class="tab-content">
+            <h2>Вузы</h2>
+            <p>Информация о вузах...</p>
+        </section>
+
+        <section id="colleges" class="tab-content">
+            <h2>Ссузы</h2>
+            <p>Информация о ссузах...</p>
+        </section>
+
+        <section id="org" class="tab-content">
+            <h2>Предприятия</h2>
+            <p>Информация о предприятиях...</p>
+        </section>
+
+        <section id="roadmap" class="tab-content">
+            <h2>Roadmap</h2>
+            <p>Ваш персональный путь развития.</p>
+        </section>
+    </main>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
